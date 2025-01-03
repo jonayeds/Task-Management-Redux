@@ -1,6 +1,6 @@
 import { RootState } from "@/redux/store";
 import { createSlice } from "@reduxjs/toolkit";
-type Task = {
+export type TTask = {
     id:string,
     title:string,
     description:string,
@@ -9,19 +9,35 @@ type Task = {
     isCompleted:boolean,
 }
 interface InitialState {
-    tasks:Task[],
+    tasks:TTask[],
     filter:"All"|"Completed"|"Incompleted"
 }
 const initialState: InitialState = {
     tasks:[
         {
-            id:"",
-            title:"",
-            description:"",
-            dueDate:"",
+            id:"001",
+            title:"Github",
+            description:"Initialize github repository",
+            dueDate:"11-11-2021",
             isCompleted:false,
             priority:"High"
-        }
+        },
+        {
+            id:"002",
+            title:"Frontend",
+            description:"Initialize frontend project",
+            dueDate:"11-11-2021",
+            isCompleted:false,
+            priority:"Medium"
+        },
+        {
+            id:"003",
+            title:"Backend",
+            description:"Initialize backend Server",
+            dueDate:"11-11-2021",
+            isCompleted:false,
+            priority:"Low"
+        },
     ],
     filter:"All"
 }
