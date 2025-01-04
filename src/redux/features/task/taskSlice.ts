@@ -25,7 +25,14 @@ const createTask = (taskData:DraftTask):TTask=>{
 }
 
 const initialState: InitialState = {
-    tasks:[],
+    tasks:[{
+        id:"001",
+        title:"Github",
+        description:"Add a branch",
+        dueDate:"",
+        isCompleted:false,
+        priority:'High'
+    }],
     filter:"All"
 }
 const taskSlice = createSlice({
@@ -35,6 +42,12 @@ const taskSlice = createSlice({
         addTask:(state,action: PayloadAction<DraftTask>)=>{
             const taskData = createTask(action.payload)
             state.tasks.push(taskData)
+        },
+        toggleCompleteState:(state, action: PayloadAction<string>)=>{
+            state.tasks.forEach((task)=>(task.id === action.payload) ? task.isCompleted = !task.isCompleted  : task )
+        },
+        deleteTask:(state, action: PayloadAction<string>)=>{
+            state.tasks = state.tasks.filter(task=> task.id !== action.payload)
         }
     }
 })
@@ -46,6 +59,6 @@ export const selectFilter = (state: RootState)=> {
     return state.todoSlice.filter
 }
 
-export const {addTask} = taskSlice.actions
+export const {addTask, toggleCompleteState, deleteTask} = taskSlice.actions
  
 export default taskSlice.reducer
