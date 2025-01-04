@@ -1,5 +1,6 @@
 import { RootState } from "@/redux/store";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {v4} from "uuid";
 export type TTask = {
     id:string,
     title:string,
@@ -13,39 +14,22 @@ interface InitialState {
     filter:"All"|"Completed"|"Incompleted"
 }
 const initialState: InitialState = {
-    tasks:[
-        {
-            id:"001",
-            title:"Github",
-            description:"Initialize github repository",
-            dueDate:"11-11-2021",
-            isCompleted:false,
-            priority:"High"
-        },
-        {
-            id:"002",
-            title:"Frontend",
-            description:"Initialize frontend project",
-            dueDate:"11-11-2021",
-            isCompleted:false,
-            priority:"Medium"
-        },
-        {
-            id:"003",
-            title:"Backend",
-            description:"Initialize backend Server",
-            dueDate:"11-11-2021",
-            isCompleted:false,
-            priority:"Low"
-        },
-    ],
+    tasks:[],
     filter:"All"
 }
 const taskSlice = createSlice({
     name:"task",
     initialState,
     reducers:{
-
+        addTask:(state,action: PayloadAction<TTask>)=>{
+            const id = v4()
+            const taskData = {
+                ...action.payload,
+                id,
+                isCompleted:false
+            }
+            state.tasks.push(taskData)
+        }
     }
 })
 
@@ -56,4 +40,6 @@ export const selectFilter = (state: RootState)=> {
     return state.todoSlice.filter
 }
 
+export const {addTask} = taskSlice.actions
+ 
 export default taskSlice.reducer

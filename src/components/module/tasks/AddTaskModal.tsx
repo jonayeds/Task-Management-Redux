@@ -11,11 +11,13 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -26,13 +28,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import { addTask, TTask } from "@/redux/features/task/taskSlice";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 function AddTaskModal() {
   const form = useForm();
-  const onSubmit = (data) => {
+  const dispatch = useDispatch()
+  const onSubmit = (data:TTask) => {
+    dispatch(addTask(data))
     console.log(data);
+
   };
   return (
     <Dialog>
@@ -72,42 +82,70 @@ function AddTaskModal() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="dueDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Due Date</FormLabel>
+             <FormField
+          control={form.control}
+          name="dueDate"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Due Date</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
                   <FormControl>
-                    <Calendar
-                      mode="single"
-                      // selected={date}
-                      // onSelect={setDate}
-                      className="rounded-md border shadow"
-                    />
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        " pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
                   </FormControl>
-                </FormItem>
-              )}
-            />
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) =>
+                      date < new Date() 
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormDescription>
+                Your date of birth is used to calculate your age.
+              </FormDescription>
+
+            </FormItem>
+          )}
+        />
             <FormField
               control={form.control}
               name="priority"
-              render={() => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Priority</FormLabel>
                   <FormControl>
-                    <Select>
+                    <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value} 
+                    >
                       <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select a fruit" />
+                        <SelectValue placeholder="Select a Priority" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectLabel>Fruits</SelectLabel>
-                          <SelectItem value="apple">Apple</SelectItem>
-                          <SelectItem value="banana">Banana</SelectItem>
-                          <SelectItem value="blueberry">Blueberry</SelectItem>
-                          <SelectItem value="grapes">Grapes</SelectItem>
-                          <SelectItem value="pineapple">Pineapple</SelectItem>
+                          <SelectLabel className="font-bold opacity-60">Priorities</SelectLabel>
+                          <SelectItem value="Low">Low</SelectItem>
+                          <SelectItem value="Medium">Medium</SelectItem>
+                          <SelectItem value="High">High</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
