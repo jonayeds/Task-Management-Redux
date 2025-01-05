@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
-import { deleteTask} from "@/redux/features/task/taskSlice";
-import { IUser } from "@/redux/features/user/userSlice";
+import { deleteUser, IUser } from "@/redux/features/user/userSlice";
 import { useAppDispatch } from "@/redux/hook";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 interface IProps {
@@ -17,7 +16,7 @@ const UserCard = ({user}: IProps) => {
         </div>
         <div className="h-full flex items-center justify-center flex-col gap-3"> 
           <div className="flex gap-3 items-center">
-            <button onClick={()=> dispatch(deleteTask(user.id))}><MdOutlineDeleteOutline className="text-red-500 text-xl"/></button>
+            <button onClick={()=> dispatch(deleteUser(user.id))}><MdOutlineDeleteOutline className="text-red-500 text-xl"/></button>
           </div>  
         </div>
       </div>
