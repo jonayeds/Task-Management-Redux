@@ -1,8 +1,8 @@
 import App from "@/App";
 import Home from "@/pages/Home";
-import Login from "@/pages/Login";
 import Tasks from "@/pages/Tasks";
 import { createBrowserRouter } from "react-router-dom";
+import Users from "@/pages/Users";
 
 const routes = createBrowserRouter([
     {
@@ -17,12 +17,13 @@ const routes = createBrowserRouter([
                 path:"/tasks",
                 element:<Tasks/>
             },
+            {
+                path:"/login",
+                element:<Users/>
+            },
         ]
     },
-    {
-        path:"/login",
-        element:<Login/>
-    },
+    
 ])
 
 export default routes
