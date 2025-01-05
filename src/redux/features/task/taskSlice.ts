@@ -29,7 +29,7 @@ const initialState: InitialState = {
         id:"001",
         title:"Github",
         description:"Add a branch",
-        dueDate:"",
+        dueDate:"ed Jan 22 2025 00:00:00 GMT+0600 (Bangladesh Standard Time)",
         isCompleted:false,
         priority:'High'
     }],
@@ -48,6 +48,15 @@ const taskSlice = createSlice({
         },
         deleteTask:(state, action: PayloadAction<string>)=>{
             state.tasks = state.tasks.filter(task=> task.id !== action.payload)
+        },
+        updateTask:(state, action:PayloadAction<TTask>)=>{
+            state.tasks = state.tasks.map(task=> {
+                if(task.id === action.payload.id){
+                    task = {...action.payload}
+                    console.log(task)
+                }
+                return task
+            })
         }
     }
 })
@@ -59,6 +68,6 @@ export const selectFilter = (state: RootState)=> {
     return state.todoSlice.filter
 }
 
-export const {addTask, toggleCompleteState, deleteTask} = taskSlice.actions
+export const {addTask, toggleCompleteState, deleteTask, updateTask} = taskSlice.actions
  
 export default taskSlice.reducer

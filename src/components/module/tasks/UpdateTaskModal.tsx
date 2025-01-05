@@ -29,33 +29,38 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { addTask, DraftTask} from "@/redux/features/task/taskSlice";
+import { TTask, updateTask} from "@/redux/features/task/taskSlice";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-function AddTaskModal() {
+function UpdateTaskModal({task}: {task:TTask}) {
   const form = useForm();
   const dispatch = useDispatch()
   const onSubmit:SubmitHandler<FieldValues> = (data) => {
-    
-    dispatch(addTask({...data, dueDate: data.dueDate.toISOString()} as DraftTask))
-    console.log(data);
-
+    const updateData:TTask ={
+      dueDate: data.dueDate.toISOString() || task.dueDate ,
+      title: data.title || task.title ,
+      priority: data.priority || task.priority ,
+      description: data.description || task.description ,
+      id: task.id ,
+      isCompleted: task.isCompleted ,
+    }
+    dispatch(updateTask(updateData as TTask))
   };
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">Add Task</Button>
+        <Button variant="default">Update Task</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Task Details</DialogTitle>
         </DialogHeader>
         <DialogDescription className="sr-only">
-          Fillup this form to add task
+          Edit this form to update task
         </DialogDescription>
         <Form {...form}>
           <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
@@ -66,7 +71,7 @@ function AddTaskModal() {
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value || ""} />
+                    <Input {...field}  value={field.value || task.title } />
                   </FormControl>
                 </FormItem>
               )}
@@ -78,7 +83,7 @@ function AddTaskModal() {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea {...field} value={field.value || ""} />
+                    <Textarea {...field} value={field.value || task.description} />
                   </FormControl>
                 </FormItem>
               )}
@@ -102,7 +107,7 @@ function AddTaskModal() {
                       {field.value ? (
                         format(field.value, "PPP")
                       ) : (
-                        <span>Pick a date</span>
+                        <span>{task.dueDate.toString().substring(3,15) || "Pick a date"}</span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
@@ -111,8 +116,8 @@ function AddTaskModal() {
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
+                    selected={field.value || task.dueDate}
+                    onSelect={field.onChange || task.dueDate}
                     disabled={(date) =>
                       date < new Date() 
                     }
@@ -135,13 +140,13 @@ function AddTaskModal() {
                   <FormLabel>Priority</FormLabel>
                   <FormControl>
                     <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value} 
+                    onValueChange={field.onChange || task.priority}
+                    defaultValue={field.value || task.priority} 
                     >
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Select a Priority" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent >
                         <SelectGroup>
                           <SelectLabel className="font-bold opacity-60">Priorities</SelectLabel>
                           <SelectItem value="Low">Low</SelectItem>
@@ -165,4 +170,4 @@ function AddTaskModal() {
     </Dialog>
   );
 }
-export default AddTaskModal;
+export default UpdateTaskModal;
