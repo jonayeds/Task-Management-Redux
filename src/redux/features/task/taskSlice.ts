@@ -10,7 +10,7 @@ export type TTask = {
 }
 interface InitialState {
     tasks:TTask[],
-    filter:"All"|"Completed"|"Incompleted"
+    filter:"All"|"Low"|"Medium"| "High"
 }
 
 export type DraftTask = Pick<TTask, "title"|"description"|"dueDate"|"priority">
@@ -57,17 +57,31 @@ const taskSlice = createSlice({
                 }
                 return task
             })
+        },
+        updateFilter:(state, action:PayloadAction<"All"|"Low"|"Medium"| "High">)=>{
+            state.filter = action.payload
         }
     }
 })
 
 export const selectTasks = (state: RootState)=> {
+    const filter = state.todoSlice.filter
+    if(filter === "Low"){
+        return state.todoSlice.tasks.filter(task=>task.priority ==="Low" )
+    }
+    else if(filter === "High"){
+        return state.todoSlice.tasks.filter(task=>task.priority ==="High" )
+    }
+    else if(filter === "Medium"){
+        return state.todoSlice.tasks.filter(task=>task.priority ==="Medium" )
+    }
+
     return state.todoSlice.tasks
 }
 export const selectFilter = (state: RootState)=> {
     return state.todoSlice.filter
 }
 
-export const {addTask, toggleCompleteState, deleteTask, updateTask} = taskSlice.actions
+export const {addTask, toggleCompleteState, deleteTask, updateTask, updateFilter} = taskSlice.actions
  
 export default taskSlice.reducer
