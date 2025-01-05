@@ -1,5 +1,6 @@
 import { RootState } from "@/redux/store";
 import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import { deleteUser } from "../user/userSlice";
 export type TTask = {
     id:string,
     title:string,
@@ -7,7 +8,7 @@ export type TTask = {
     dueDate:string,
     priority:"High"| "Medium"| "Low",
     isCompleted:boolean,
-    assignedTo:string
+    assignedTo:string|null
 }
 interface InitialState {
     tasks:TTask[],
@@ -21,7 +22,8 @@ const createTask = (taskData:DraftTask):TTask=>{
     return {
         ...taskData,
         id,
-        isCompleted:false
+        isCompleted:false,
+        assignedTo: taskData.assignedTo || null  
     }
 }
 
@@ -33,7 +35,7 @@ const initialState: InitialState = {
         dueDate:"ed Jan 22 2025 00:00:00 GMT+0600 (Bangladesh Standard Time)",
         isCompleted:false,
         priority:'High',
-        assignedTo:""
+        assignedTo:null
     }],
     filter:"All"
 }
@@ -63,6 +65,11 @@ const taskSlice = createSlice({
         updateFilter:(state, action:PayloadAction<"All"|"Low"|"Medium"| "High">)=>{
             state.filter = action.payload
         }
+    },
+    extraReducers:(builder)=>{
+        builder.addCase(deleteUser, (state, action)=>{
+            state.tasks.forEach(task=> task.assignedTo === action.payload? task.assignedTo = null: task)
+        })
     }
 })
 

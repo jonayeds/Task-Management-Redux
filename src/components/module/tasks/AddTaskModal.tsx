@@ -35,10 +35,12 @@ import { useAppSelector } from "@/redux/hook";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
 function AddTaskModal() {
+  const [open,setOpen] = useState(false)
   const form = useForm();
   const dispatch = useDispatch()
   const users = useAppSelector(selectUsers)
@@ -46,10 +48,12 @@ function AddTaskModal() {
     
     dispatch(addTask({...data, dueDate: data.dueDate.toISOString()} as DraftTask))
     console.log(data);
+    setOpen(false)
+    form.reset()
 
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="default">Add Task</Button>
       </DialogTrigger>
@@ -177,7 +181,7 @@ function AddTaskModal() {
                           
                           {
                             users.map(user=>(
-                              <SelectItem value={user.id}>{user.name}</SelectItem>
+                              <SelectItem key={user.id} value={user.id}>{user.name}</SelectItem>
                             ))
                           }
                         </SelectGroup>
