@@ -39,7 +39,7 @@ const userSlice = createSlice({
 })
 
 export const selectUsers= (state:RootState)=>{
-    return state.userSlice
+    return state.userSlice.users
 }
 
 export const {addUser, deleteUser}  = userSlice.actions

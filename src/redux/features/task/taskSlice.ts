@@ -7,13 +7,14 @@ export type TTask = {
     dueDate:string,
     priority:"High"| "Medium"| "Low",
     isCompleted:boolean,
+    assignedTo:string
 }
 interface InitialState {
     tasks:TTask[],
     filter:"All"|"Low"|"Medium"| "High"
 }
 
-export type DraftTask = Pick<TTask, "title"|"description"|"dueDate"|"priority">
+export type DraftTask = Pick<TTask, "title"|"description"|"dueDate"|"priority"| "assignedTo">
 
 const createTask = (taskData:DraftTask):TTask=>{
     const id = nanoid()
@@ -31,7 +32,8 @@ const initialState: InitialState = {
         description:"Add a branch",
         dueDate:"ed Jan 22 2025 00:00:00 GMT+0600 (Bangladesh Standard Time)",
         isCompleted:false,
-        priority:'High'
+        priority:'High',
+        assignedTo:""
     }],
     filter:"All"
 }

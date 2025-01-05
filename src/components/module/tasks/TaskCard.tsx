@@ -1,14 +1,18 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { deleteTask, toggleCompleteState, TTask} from "@/redux/features/task/taskSlice";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import UpdateTaskModal from "./UpdateTaskModal";
+import { selectUsers } from "@/redux/features/user/userSlice";
 interface IProps {
     task:TTask
 }
 const TaskCard = ({task}: IProps) => {
   const dispatch = useAppDispatch()
+  const users = useAppSelector(selectUsers)
+  const assignedUser = users.find(user=>user.id === task.assignedTo)
+
 
   return (
     <div className="border border-gray-200 rounded-lg py-4 px-8 mt-4">
@@ -32,6 +36,7 @@ const TaskCard = ({task}: IProps) => {
         </div>
       </div>
       <div className=" mt-4">
+        <p className="opacity-70">Assigned to {assignedUser?.name || "none"}</p>
         <p>{task.description}</p>
       </div>
     </div>

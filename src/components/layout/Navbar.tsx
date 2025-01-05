@@ -10,7 +10,7 @@ const Navbar = ()=>{
             <div className="flex items-center gap-5">
                 <Link to={"/"}>Home</Link>
                 <Link to={"/tasks"}>Tasks</Link>
-                <Link to={"/login"}>Login</Link>
+                <Link to={"/users"}>Users</Link>
             </div>
             <div>
                 <ModeToggle/>

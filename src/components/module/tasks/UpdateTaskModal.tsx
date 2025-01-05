@@ -47,6 +47,7 @@ function UpdateTaskModal({task}: {task:TTask}) {
       description: data.description || task.description ,
       id: task.id ,
       isCompleted: task.isCompleted ,
+      assignedTo:task.assignedTo
     }
     dispatch(updateTask(updateData as TTask))
   };

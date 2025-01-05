@@ -11,7 +11,7 @@ const Users = () => {
       <AddUserModal/>
       <div className="mt-6 grid grid-cols-4 gap-3">
         {
-          users.users.map((user)=>(
+          users.map((user)=>(
             <UserCard key={user.id} user={user}/>
           ))
         }
