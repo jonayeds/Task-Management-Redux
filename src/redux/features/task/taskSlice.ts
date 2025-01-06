@@ -1,21 +1,21 @@
 // import { RootState } from "@/redux/store";
 // import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
 // import { deleteUser } from "../user/userSlice";
-// export type TTask = {
-//     id:string,
-//     title:string,
-//     description:string,
-//     dueDate:string,
-//     priority:"High"| "Medium"| "Low",
-//     isCompleted:boolean,
-//     assignedTo:string|null
-// }
+export type TTask = {
+    id:string,
+    title:string,
+    description:string,
+    dueDate:string,
+    priority:"High"| "Medium"| "Low",
+    isCompleted:boolean,
+    assignedTo:string|null
+}
 // interface InitialState {
 //     tasks:TTask[],
 //     filter:"All"|"Low"|"Medium"| "High"
 // }
 
-// export type DraftTask = Pick<TTask, "title"|"description"|"dueDate"|"priority"| "assignedTo">
+export type DraftTask = Pick<TTask, "title"|"description"|"dueDate"|"priority"| "assignedTo">
 
 // const createTask = (taskData:DraftTask):TTask=>{
 //     const id = nanoid()
