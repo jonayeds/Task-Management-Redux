@@ -5,7 +5,11 @@ import { useGetTasksQuery } from "@/redux/api/baseApi";
 import {TTask} from "@/redux/features/task/taskSlice"
 
 const Tasks = () => {
-  const {data, isLoading, isError} = useGetTasksQuery(undefined)
+  const {data, isLoading, isError} = useGetTasksQuery(undefined,{
+    refetchOnFocus:true,
+    refetchOnMountOrArgChange:true,
+    refetchOnReconnect:true
+  })
   console.log(data,isLoading, isError)
   if(isLoading){
     return (
